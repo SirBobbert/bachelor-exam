@@ -29,7 +29,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" -var="location=${{ secrets.AZURE_LOCATION }}" -var="resource_group_name=app-grp"
+        run: terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" -var="location=North Europe" -var="resource_group_name=app-grp"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
