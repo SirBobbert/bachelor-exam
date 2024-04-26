@@ -25,6 +25,9 @@ jobs:
         with:
           terraform_version: 1.0.0
 
+      - name: Copy terraform.tfvars
+        run: cp $GITHUB_WORKSPACE/terraform.tfvars /home/runner/work/bachelor-exam/bachelor-exam/terraform.tfvars
+
       - name: Terraform Init
         run: terraform init
 
