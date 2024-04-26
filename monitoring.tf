@@ -1,3 +1,4 @@
+/**
 resource "azurerm_resource_group" "app_grp-test-2" {
   name     = "test-resource-bobbert"
   location = var.location
@@ -37,3 +38,4 @@ resource "azurerm_monitor_metric_alert" "cpu_alert" {
     azurerm_postgresql_flexible_server.example, # Ensure PostgreSQL Flexible Server is created first
   ]
 }
+**/
