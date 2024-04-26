@@ -1,4 +1,4 @@
-name: Terraform Plan and Apply Test
+name: Terraform Plan and Apply
 
 on:
   push:
@@ -25,11 +25,14 @@ jobs:
         with:
           terraform_version: 1.0.0
 
+      - name: Copy .tfvars file
+        run: cp $GITHUB_WORKSPACE/terraform.tfvars .
+
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var-file=$GITHUB_WORKSPACE/Bachelor/Terraform/terraform.tfvars
+        run: terraform plan -out=tfplan -var-file=terraform.tfvars
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan -var-file=terraform.tfvars
+        run: terraform apply -auto-approve tfplan
