@@ -1,34 +1,21 @@
-name: Terraform Plan and Apply
+name: Terraform Workflow
 
 on:
   push:
     branches:
       - main
 
-env:
-  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
-
 jobs:
-  terraform-plan-apply:
-    name: "Terraform Plan and Apply"
+  terraform:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.0
+      - name: Copy terraform.tfvars
+        run: cp $GITHUB_WORKSPACE/terraform.tfvars /home/runner/work/bachelor-exam/bachelor-exam/terraform.tfvars
 
-      - name: Copy .tfvars file
-        run: cp $GITHUB_WORKSPACE/terraform.tfvars .
-
-      - name: Terraform Init
+      - name: Initialize Terraform
         run: terraform init
 
       - name: Terraform Plan
