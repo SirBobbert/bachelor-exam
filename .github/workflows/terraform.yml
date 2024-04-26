@@ -9,6 +9,7 @@ env:
   ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
   ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}" # Add this line
 
 jobs:
   terraform-plan-apply:
@@ -28,7 +29,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}"
+        run: terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" # Add this line
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
