@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Copy terraform.tfvars
-        run: cp $GITHUB_WORKSPACE/terraform.tfvars /home/runner/work/bachelor-exam/bachelor-exam/terraform.tfvars
+        run: cp $GITHUB_WORKSPACE/terraform.tfvars terraform.tfvars
 
       - name: Initialize Terraform
         run: terraform init
