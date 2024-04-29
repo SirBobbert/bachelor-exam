@@ -14,7 +14,7 @@ resource "azurerm_monitor_metric_alert" "read_iops_alert" {
   }
 
   action {
-    action_group_id = var.postgresql_server_id
+    action_group_id = azurerm_monitor_action_group.email_notifications.id
   }
 
   target_resource_type     = var.metric_namespace
