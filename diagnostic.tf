@@ -1,4 +1,4 @@
-
+/*
 resource "azurerm_monitor_diagnostic_setting" "example" {
   name               = "example-psqlflexibleserver-diagnostics"
   target_resource_id = azurerm_postgresql_flexible_server.example.id
@@ -20,3 +20,4 @@ resource "azurerm_monitor_diagnostic_setting" "example" {
     }
   }
 }
+*/
