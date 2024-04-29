@@ -34,7 +34,7 @@ variable "location" {
 variable "server_name" {
   description = "The name of the PostgreSQL server"
   type        = string
-  default     = "example-psqlflexibleserver-test2222222"
+  default     = "example-psqlflexibleserver-test-1"
 }
 
 variable "administrator_login" {
@@ -58,8 +58,9 @@ variable "server_version" {
 variable "sku_name" {
   description = "The SKU name of the PostgreSQL server"
   type        = string
-  default     = "B_Standard_B1ms"
+  default     = "GP_Standard_D4s_v3" # SKU that supports high availability
 }
+
 
 variable "backup_retention_days" {
   description = "The number of days to retain backups"
@@ -83,4 +84,17 @@ variable "auto_grow_enabled" {
   description = "Whether automatic storage growth is enabled"
   type        = bool
   default     = true
+}
+
+// High Availability
+variable "ha_mode" {
+  description = "The high availability mode for the PostgreSQL server ('SameZone' or 'ZoneRedundant')"
+  type        = string
+  default     = "ZoneRedundant"
+}
+
+variable "ha_standby_availability_zone" {
+  description = "The Availability Zone where the standby server should be located"
+  type        = number
+  default     = 1
 }
