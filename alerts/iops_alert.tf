@@ -1,16 +1,16 @@
-resource "azurerm_monitor_metric_alert" "memory_alert" {
-  name                = "memory-usage-alert"
+resource "azurerm_monitor_metric_alert" "read_iops_alert" {
+  name                = "read-iops-alert"
   resource_group_name = var.resource_group_name
   scopes              = var.scope
 
-  description = "Alert triggered when memory usage exceeds 80%."
+  description = "Alert triggered when read IOPS exceeds 100."
 
   criteria {
     metric_namespace = var.metric_namespace
-    metric_name      = "memory_percent"
+    metric_name      = "read_iops"
     aggregation      = "Average"
     operator         = "GreaterThan"
-    threshold        = 80
+    threshold        = 100
   }
 
   action {

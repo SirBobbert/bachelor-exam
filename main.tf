@@ -32,6 +32,16 @@ resource "azurerm_postgresql_flexible_server" "example" {
 
 }
 
+module "cpu_alert" {
+  source               = "./alerts"
+  resource_group_name  = azurerm_resource_group.app_grp.name
+  scope                = [azurerm_resource_group.app_grp.id]
+  postgresql_server_id = azurerm_postgresql_flexible_server.example.id
+  location             = azurerm_resource_group.app_grp.location
+}
+
+
+
 # TODO:
 # Test
 # Data backup
