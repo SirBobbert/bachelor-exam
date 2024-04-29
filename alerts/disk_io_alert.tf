@@ -1,27 +1,21 @@
-resource "azurerm_monitor_action_group" "example" {
-  name                = "CriticalAlertsAction"
-  resource_group_name = azurerm_resource_group.app_grp.name
-  short_name          = "p0action"
-
-  email_receiver {
-    name          = "sendtoadmin"
-    email_address = "robert.pallesen13@gmail.com"
-  }
+module "action_group" {
+  source = "./monitor_action_group.tf"
 }
 
-resource "azurerm_monitor_metric_alert" "cpu_alert" {
-  name                = "cpu-usage-alert"
+# Disk I/O Alert
+resource "azurerm_monitor_metric_alert" "disk_io_alert" {
+  name                = "disk-io-alert"
   resource_group_name = azurerm_resource_group.app_grp.name
   scopes              = [azurerm_resource_group.app_grp.id]
 
-  description = "Alert triggered when CPU usage exceeds 80%."
+  description = "Alert triggered when disk I/O latency exceeds 10 milliseconds."
 
   criteria {
     metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-    metric_name      = "cpu_percent"
+    metric_name      = "read_iops"
     aggregation      = "Average"
     operator         = "GreaterThan"
-    threshold        = 80
+    threshold        = 10
   }
 
   action {
@@ -30,7 +24,6 @@ resource "azurerm_monitor_metric_alert" "cpu_alert" {
 
   target_resource_type     = "Microsoft.DBforPostgreSQL/flexibleServers"
   target_resource_location = "North Europe" # Replace this with the actual location of your resource
-
 
   depends_on = [
     azurerm_monitor_action_group.example,

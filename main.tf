@@ -35,5 +35,8 @@ resource "azurerm_postgresql_flexible_server" "example" {
 # TODO:
 # Health checks
 # Test
-# HA
 # Data backup
+
+
+# DONE:
+# HA
