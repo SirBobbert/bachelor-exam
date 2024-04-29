@@ -23,11 +23,12 @@ resource "azurerm_postgresql_flexible_server" "example" {
 
   backup_retention_days = var.backup_retention_days
 
-  storage_mb        = var.storage_mb
-  storage_tier      = var.storage_tier
+  storage_mb   = var.storage_mb
+  storage_tier = var.storage_tier
+
   auto_grow_enabled = var.auto_grow_enabled
 }
 
 # TODO:
 # Health checks
-# CI/CD
+# Test
