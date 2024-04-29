@@ -1,7 +1,7 @@
 # Define Azure Monitor action group
 resource "azurerm_monitor_action_group" "example" {
   name                = "CriticalAlertsAction"
-  resource_group_name = azurerm_resource_group.app_grp.name
+  resource_group_name = "app-grp"
   short_name          = "p0action"
 
   email_receiver {

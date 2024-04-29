@@ -5,7 +5,7 @@ module "action_group" {
 # Memory Usage Alert
 resource "azurerm_monitor_metric_alert" "memory_alert" {
   name                = "memory-usage-alert"
-  resource_group_name = azurerm_resource_group.app_grp.name
+  resource_group_name = "app-grp"
   scopes              = [azurerm_resource_group.app_grp.id]
 
   description = "Alert triggered when memory usage exceeds 80%."
