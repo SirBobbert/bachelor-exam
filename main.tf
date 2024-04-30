@@ -21,16 +21,18 @@ resource "azurerm_postgresql_flexible_server" "example" {
   version                = var.server_version
   sku_name               = var.sku_name
 
-  backup_retention_days = var.backup_retention_days
-  storage_mb            = var.storage_mb
-  storage_tier          = var.storage_tier
-  auto_grow_enabled     = var.auto_grow_enabled
+  storage_mb        = var.storage_mb
+  storage_tier      = var.storage_tier
+  auto_grow_enabled = var.auto_grow_enabled
+
+  backup_retention_days        = var.backup_retention_days
+  geo_redundant_backup_enabled = var.geo_redundant_backup_enabled
 
   high_availability {
     mode = var.ha_mode
   }
-
 }
+
 module "metric_alerts" {
   source               = "./alerts"
   resource_group_name  = azurerm_resource_group.app_grp.name

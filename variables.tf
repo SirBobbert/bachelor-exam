@@ -61,13 +61,6 @@ variable "sku_name" {
   default     = "GP_Standard_D4s_v3" # SKU that supports high availability
 }
 
-
-variable "backup_retention_days" {
-  description = "The number of days to retain backups"
-  type        = number
-  default     = 7
-}
-
 variable "storage_mb" {
   description = "The amount of storage for the PostgreSQL server in megabytes"
   type        = number
@@ -97,4 +90,17 @@ variable "ha_standby_availability_zone" {
   description = "The Availability Zone where the standby server should be located"
   type        = number
   default     = 1
+}
+
+// Backup settings
+variable "backup_retention_days" {
+  description = "The number of days to retain backups"
+  type        = number
+  default     = 7
+}
+
+variable "geo_redundant_backup_enabled" {
+  description = "Whether geo-redundant backups are enabled"
+  type        = bool
+  default     = false
 }
