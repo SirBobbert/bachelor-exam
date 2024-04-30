@@ -34,7 +34,7 @@ variable "location" {
 variable "server_name" {
   description = "The name of the PostgreSQL server"
   type        = string
-  default     = "example-psqlflexibleserver-test-server"
+  default     = "example-psqlflexibleserver-test-server-1"
 }
 
 variable "administrator_login" {
