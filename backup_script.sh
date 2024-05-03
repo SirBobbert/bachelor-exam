@@ -1,14 +1,7 @@
 #!/bin/bash
 
-# Set variables
-export POSTGRES_HOST="${var.postgres_host}"
-export POSTGRES_PORT="${var.postgres_port}"
-export POSTGRES_DB="${var.postgres_db}"
-export POSTGRES_USER="${var.postgres_user}"
-export POSTGRES_PASSWORD="${var.postgres_password}"
-export CONTAINER_NAME="${var.container_name}"
-export STORAGE_ACCOUNT_NAME="${var.storage_account_name}"
-export STORAGE_ACCOUNT_KEY="${var.storage_account_key}"
+# Read variables from file
+source /tmp/backup_variables
 
 # Set the backup filename with timestamp
 BACKUP_FILENAME="backup_$(date +"%Y%m%d_%H%M%S").sql"

@@ -33,6 +33,7 @@ resource "azurerm_postgresql_flexible_server" "example" {
   }
 }
 
+/*
 # alerts
 module "metric_alerts" {
   source               = "./alerts"
@@ -41,7 +42,7 @@ module "metric_alerts" {
   postgresql_server_id = azurerm_postgresql_flexible_server.example.id
   location             = azurerm_resource_group.app_grp.location
 }
-
+*/
 
 # storage account
 module "storage_account_settings" {
@@ -52,20 +53,33 @@ module "storage_account_settings" {
 
 resource "null_resource" "backup" {
   provisioner "local-exec" {
-    command = "./backup_script.sh"
+    command = <<-EOT
+      cat <<EOF > /tmp/backup_variables
+      POSTGRES_HOST="${var.postgres_host}"
+      POSTGRES_PORT="${var.postgres_port}"
+      POSTGRES_DB="${var.postgres_db}"
+      POSTGRES_USER="${var.postgres_user}"
+      POSTGRES_PASSWORD="${var.postgres_password}"
+      CONTAINER_NAME="${var.container_name}"
+      STORAGE_ACCOUNT_NAME="${var.storage_account_name}"
+      STORAGE_ACCOUNT_KEY="${var.storage_account_key}"
+      EOF
+    EOT
   }
 
   # This triggers the execution of the script whenever the server is created or updated
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 }
 
 
 
 
+
 # TODO:
-# Test
+# Test - integration test
+# Explain terraform in the exam (init, plan, apply)
 
 
 # DONE:
