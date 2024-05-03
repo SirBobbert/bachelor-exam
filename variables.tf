@@ -104,3 +104,45 @@ variable "geo_redundant_backup_enabled" {
   type        = bool
   default     = false
 }
+
+variable "postgres_host" {
+  description = "The hostname of the PostgreSQL server"
+  type        = string
+}
+
+variable "postgres_port" {
+  description = "The port of the PostgreSQL server"
+  type        = number
+}
+
+variable "postgres_db" {
+  description = "The name of the PostgreSQL database"
+  type        = string
+}
+
+variable "postgres_user" {
+  description = "The username for accessing the PostgreSQL database"
+  type        = string
+}
+
+variable "postgres_password" {
+  description = "The password for accessing the PostgreSQL database"
+  type        = string
+  sensitive   = true
+}
+
+variable "container_name" {
+  description = "The name of the Azure Blob Storage container"
+  type        = string
+}
+
+variable "storage_account_name" {
+  description = "The name of the Azure Storage Account"
+  type        = string
+}
+
+variable "storage_account_key" {
+  description = "The access key for the Azure Storage Account"
+  type        = string
+  sensitive   = true
+}

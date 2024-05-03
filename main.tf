@@ -33,6 +33,7 @@ resource "azurerm_postgresql_flexible_server" "example" {
   }
 }
 
+# alerts
 module "metric_alerts" {
   source               = "./alerts"
   resource_group_name  = azurerm_resource_group.app_grp.name
@@ -41,11 +42,25 @@ module "metric_alerts" {
   location             = azurerm_resource_group.app_grp.location
 }
 
+
+# storage account
 module "storage_account_settings" {
   source              = "./storage"
   resource_group_name = azurerm_resource_group.app_grp.name
   location            = azurerm_resource_group.app_grp.location
 }
+
+resource "null_resource" "backup" {
+  provisioner "local-exec" {
+    command = "./backup_script.sh"
+  }
+
+  # This triggers the execution of the script whenever the server is created or updated
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+}
+
 
 
 
