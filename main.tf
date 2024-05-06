@@ -33,7 +33,6 @@ resource "azurerm_postgresql_flexible_server" "example" {
   }
 }
 
-/*
 # alerts
 module "metric_alerts" {
   source               = "./alerts"
@@ -42,8 +41,8 @@ module "metric_alerts" {
   postgresql_server_id = azurerm_postgresql_flexible_server.example.id
   location             = azurerm_resource_group.app_grp.location
 }
-*/
 
+/*
 # storage account
 module "storage_account_settings" {
   source              = "./storage"
@@ -73,7 +72,7 @@ resource "null_resource" "backup" {
   }
 }
 
-
+*/
 
 
 
