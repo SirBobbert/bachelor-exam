@@ -34,7 +34,7 @@ variable "location" {
 variable "server_name" {
   description = "The name of the PostgreSQL server"
   type        = string
-  default     = "example-psqlflexibleserver-test-server-1"
+  default     = "example-psqlflexibleserver-test-server-test-42"
 }
 
 variable "administrator_login" {
@@ -58,7 +58,7 @@ variable "server_version" {
 variable "sku_name" {
   description = "The SKU name of the PostgreSQL server"
   type        = string
-  default     = "GP_Standard_D4s_v3" # SKU that supports high availability
+  default     = "GP_Standard_D4s_v3" // SKU that supports high availability
 }
 
 variable "storage_mb" {
@@ -105,6 +105,7 @@ variable "geo_redundant_backup_enabled" {
   default     = false
 }
 
+// Additional variables for null_resource (if needed)
 variable "postgres_host" {
   description = "The hostname of the PostgreSQL server"
   type        = string

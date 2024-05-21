@@ -29,11 +29,18 @@ resource "azurerm_postgresql_flexible_server" "example" {
   geo_redundant_backup_enabled = var.geo_redundant_backup_enabled
 
   high_availability {
-    mode = var.ha_mode
+    mode                      = var.ha_mode
+    #standby_availability_zone = var.ha_standby_availability_zone
+  }
+
+  depends_on = [azurerm_resource_group.app_grp]
+
+  tags = {
+    environment = "test"
   }
 }
 
-# alerts
+# Alerts module
 module "metric_alerts" {
   source               = "./alerts"
   resource_group_name  = azurerm_resource_group.app_grp.name
@@ -42,14 +49,14 @@ module "metric_alerts" {
   location             = azurerm_resource_group.app_grp.location
 }
 
-/*
-# storage account
+# Storage account module
 module "storage_account_settings" {
   source              = "./storage"
   resource_group_name = azurerm_resource_group.app_grp.name
   location            = azurerm_resource_group.app_grp.location
 }
 
+/*
 resource "null_resource" "backup" {
   provisioner "local-exec" {
     command = <<-EOT
@@ -71,10 +78,7 @@ resource "null_resource" "backup" {
     always_run = timestamp()
   }
 }
-
 */
-
-
 
 # TODO:
 # Test - integration test

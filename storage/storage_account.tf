@@ -1,10 +1,18 @@
+resource "random_id" "storage_account_id" {
+  byte_length = 8
+}
+
 # Define Azure Storage Account for storing backups
 resource "azurerm_storage_account" "example" {
-  name                     = "examplestotest"        # Name of the storage account
+  name                     = "storage${random_id.storage_account_id.hex}"        # Name of the storage account
   resource_group_name      = var.resource_group_name # Name of the resource group
   location                 = var.location            # Location of the storage account
   account_tier             = "Standard"              # Storage account tier
   account_replication_type = "LRS"                   # Storage account replication type
+
+  tags = {
+    environment = "test"
+  }
 }
 
 resource "azurerm_storage_management_policy" "example" {
