@@ -24,9 +24,12 @@ jobs:
           terraform_version: 1.1.5
 
       - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          echo ${{ secrets.AZURE_CLIENT_ID }} > client_id
+          echo ${{ secrets.AZURE_CLIENT_SECRET }} > client_secret
+          echo ${{ secrets.AZURE_SUBSCRIPTION_ID }} > subscription_id
+          echo ${{ secrets.AZURE_TENANT_ID }} > tenant_id
+          az login --service-principal -u $(cat client_id) -p $(cat client_secret) --tenant $(cat tenant_id)
 
       - name: Terraform Init
         run: terraform init
