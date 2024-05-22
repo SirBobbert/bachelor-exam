@@ -29,7 +29,8 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan \
+        run: |
+          terraform plan -out=tfplan \
           -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" \
           -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
           -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
@@ -38,5 +39,4 @@ jobs:
           -var="resource_group_name=app-grp"
 
       - name: Terraform Apply
-        if: success()
         run: terraform apply -auto-approve tfplan
