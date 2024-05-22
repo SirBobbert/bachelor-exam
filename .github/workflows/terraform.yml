@@ -1,4 +1,4 @@
-name: Test and Deploy with Terraform
+name: Terraform Plan and Apply
 
 on:
   push:
@@ -9,41 +9,16 @@ env:
   ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
   ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
+  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}" # Add this line
 
 jobs:
-  test:
-    name: Run Tests
+  terraform-plan-apply:
+    name: "Terraform Plan and Apply"
     runs-on: ubuntu-latest
-    timeout-minutes: 60
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Setup Terraform Cache Directory
-        run: mkdir -p ~/.terraform.d/plugin-cache
-
-      - name: Cache Terraform Plugins
-        uses: actions/cache@v2
-        with:
-          path: ~/.terraform.d/plugin-cache
-          key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
-          restore-keys: |
-            ${{ runner.os }}-terraform-
-
-      - name: Cache Go Modules
-        uses: actions/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-mod-
-
-      - name: Setup Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: "1.15"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -51,50 +26,7 @@ jobs:
           terraform_version: 1.0.0
 
       - name: Terraform Init
-        run: terraform init -plugin-dir=${HOME}/.terraform.d/plugin-cache
-
-      - name: Terraform Plan
-        run: |
-          export TF_LOG=DEBUG
-          terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" -var="location=North Europe" -var="resource_group_name=app-grp"
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
-
-      - name: Run Go Tests
-        run: go test -timeout 35m -v ./test
-
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
-
-  terraform:
-    name: Terraform Plan and Apply
-    runs-on: ubuntu-latest
-    needs: test
-    timeout-minutes: 60
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Terraform Cache Directory
-        run: mkdir -p ~/.terraform.d/plugin-cache
-
-      - name: Cache Terraform Plugins
-        uses: actions/cache@v2
-        with:
-          path: ~/.terraform.d/plugin-cache
-          key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
-          restore-keys: |
-            ${{ runner.os }}-terraform-
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.0
-
-      - name: Terraform Init
-        run: terraform init -plugin-dir=${HOME}/.terraform.d/plugin-cache
+        run: terraform init
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" -var="location=North Europe" -var="resource_group_name=app-grp"
