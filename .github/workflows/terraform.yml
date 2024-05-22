@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup Terraform Cache Directory
+        run: mkdir -p ~/.terraform.d/plugin-cache
+
       - name: Cache Terraform Plugins
         uses: actions/cache@v2
         with:
@@ -73,6 +76,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Setup Terraform Cache Directory
+        run: mkdir -p ~/.terraform.d/plugin-cache
 
       - name: Cache Terraform Plugins
         uses: actions/cache@v2
