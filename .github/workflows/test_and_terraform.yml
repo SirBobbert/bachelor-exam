@@ -28,6 +28,11 @@ jobs:
         env:
           TF_VAR_resource_group_name: "ci-cd-auto-test-group"
           TF_VAR_server_name: "ci-cd-auto-test-server"
+          TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          TF_VAR_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          TF_VAR_location: "North Europe"
         run: |
           go test -timeout 35m -v ./test
 
@@ -61,6 +66,11 @@ jobs:
         env:
           TF_VAR_resource_group_name: "app-grp"
           TF_VAR_server_name: "postgres-server"
+          TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          TF_VAR_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          TF_VAR_location: "North Europe"
         run: terraform plan -out=tfplan -no-color
 
       - name: Terraform Apply
