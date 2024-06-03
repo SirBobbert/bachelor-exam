@@ -132,11 +132,6 @@ variable "postgres_password" {
   sensitive   = true
 }
 
-variable "container_name" {
-  description = "The name of the Azure Blob Storage container"
-  type        = string
-}
-
 variable "storage_account_name" {
   description = "The name of the Azure Storage Account"
   type        = string
