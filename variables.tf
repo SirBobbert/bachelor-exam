@@ -25,16 +25,16 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "location" {
-  description = "The Azure region where the PostgreSQL server will be deployed"
-  type        = string
-}
-
 // Postgresql Flexible Server
 variable "server_name" {
   description = "The name of the PostgreSQL server"
   type        = string
-  default     = "example-psqlflexibleserver-test-server"
+  #default     = "example-psqlflexibleserver-test-server"
+}
+
+variable "location" {
+  description = "The Azure region where the PostgreSQL server will be deployed"
+  type        = string
 }
 
 variable "administrator_login" {

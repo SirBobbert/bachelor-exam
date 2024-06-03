@@ -2,11 +2,12 @@ package test
 
 import (
 	"context"
+	"log"
+	"sync"
 	"testing"
 	"time"
 
-	"sync"
-
+	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
@@ -21,7 +22,9 @@ func TestTerraformModule(t *testing.T) {
 
 		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
-			// Other variable definitions (if any)
+			"resource_group_name": "auto-test-group",
+			"server_name":         "auto-test-server",
+			// Add other variables as needed
 		},
 
 		// Disable colors in Terraform commands so it's easier to parse stdout/stderr
@@ -33,10 +36,19 @@ func TestTerraformModule(t *testing.T) {
 
 	go func() {
 		defer wg.Done()
-		defer terraform.Destroy(t, options) // Clean up resources with "terraform destroy" at the end of the test
+		defer func() {
+			log.Println("Waiting for 30 seconds before destroying resources")
+			time.Sleep(30 * time.Second) // Add a delay before destroying
+			log.Println("Running terraform destroy")
+			terraform.Destroy(t, options)
+			log.Println("Completed terraform destroy")
+		}()
 
 		// Run "terraform init" and "terraform apply". Fail the test if there are any errors.
-		terraform.InitAndApply(t, options)
+		retry.DoWithRetry(t, "Running Terraform InitAndApply", 3, 10*time.Second, func() (string, error) {
+			terraform.InitAndApply(t, options)
+			return "", nil
+		})
 	}()
 
 	// Wait for the goroutine to finish or the context to timeout
@@ -54,6 +66,3 @@ func TestTerraformModule(t *testing.T) {
 		t.Fatal("Test timed out after 30 minutes")
 	}
 }
-
-// IF TESTING
-//  go test -timeout 35m -v ./test
