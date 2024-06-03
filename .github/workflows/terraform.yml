@@ -1,70 +1,35 @@
-# File: .github/workflows/terraform.yml
-
-name: Terraform CI/CD
+name: Terraform Plan and Apply
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}" # Add this line
 
 jobs:
-  terraform:
+  terraform-plan-apply:
+    name: "Terraform Plan and Apply"
     runs-on: ubuntu-latest
-    timeout-minutes: 30 # Set a timeout for the job
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.1.5
-
-      - name: Azure Login
-        run: |
-          echo ${{ secrets.AZURE_CLIENT_ID }} > client_id
-          echo ${{ secrets.AZURE_CLIENT_SECRET }} > client_secret
-          echo ${{ secrets.AZURE_SUBSCRIPTION_ID }} > subscription_id
-          echo ${{ secrets.AZURE_TENANT_ID }} > tenant_id
-          az login --service-principal -u $(cat client_id) -p $(cat client_secret) --tenant $(cat tenant_id)
+          terraform_version: 1.0.0
 
       - name: Terraform Init
         run: terraform init
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
-      - name: Terraform Validate
-        run: terraform validate
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Terraform Plan
-        run: terraform plan -input=false -no-color -parallelism=4
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: terraform plan -out=tfplan -var="client_id=${{ secrets.AZURE_CLIENT_ID }}" -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" -var="location=North Europe" -var="resource_group_name=app-grp"
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -input=false -auto-approve -parallelism=4
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
-      - name: Post-apply tasks
-        if: github.ref == 'refs/heads/main'
-        run: echo "Terraform Apply Completed"
+        run: terraform apply -auto-approve tfplan
