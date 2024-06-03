@@ -29,7 +29,7 @@ resource "azurerm_postgresql_flexible_server" "example" {
   geo_redundant_backup_enabled = var.geo_redundant_backup_enabled
 
   high_availability {
-    mode                      = var.ha_mode
+    mode = var.ha_mode
     #standby_availability_zone = var.ha_standby_availability_zone
   }
 
@@ -48,6 +48,7 @@ module "metric_alerts" {
   postgresql_server_id = azurerm_postgresql_flexible_server.example.id
   location             = azurerm_resource_group.app_grp.location
 }
+/*
 
 # Storage account module
 module "storage_account_settings" {
@@ -56,7 +57,6 @@ module "storage_account_settings" {
   location            = azurerm_resource_group.app_grp.location
 }
 
-/*
 resource "null_resource" "backup" {
   provisioner "local-exec" {
     command = <<-EOT
