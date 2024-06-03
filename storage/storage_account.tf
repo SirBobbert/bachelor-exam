@@ -1,3 +1,4 @@
+/*
 resource "random_id" "storage_account_id" {
   byte_length = 8
 }
@@ -37,3 +38,4 @@ resource "azurerm_storage_management_policy" "example" {
     }
   }
 }
+*/
