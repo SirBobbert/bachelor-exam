@@ -26,8 +26,8 @@ jobs:
 
       - name: Run Tests
         env:
-          TF_VAR_resource_group_name: "ci-cd-test-group"
-          TF_VAR_server_name: "ci-cd-test-server"
+          TF_VAR_resource_group_name: "ci-cd-test-group-1"
+          TF_VAR_server_name: "ci-cd-test-server-1"
           TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
           TF_VAR_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -64,8 +64,8 @@ jobs:
 
       - name: Terraform Plan
         env:
-          TF_VAR_resource_group_name: "ci-cd-app-grp"
-          TF_VAR_server_name: "postgres-server"
+          TF_VAR_resource_group_name: "ci-cd-app-grp-1"
+          TF_VAR_server_name: "ci-cd-postgres-server-1"
           TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
           TF_VAR_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
