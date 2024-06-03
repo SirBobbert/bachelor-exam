@@ -22,8 +22,6 @@ func TestTerraformModule(t *testing.T) {
 
 		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
-			//"resource_group_name": "auto-test-group",
-			//"server_name":         "auto-test-server",
 			// Add other variables as needed
 		},
 
