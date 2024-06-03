@@ -26,13 +26,12 @@ jobs:
 
       - name: Run Tests
         env:
-          TF_VAR_resource_group_name: "ci-cd-test-group"
-          TF_VAR_server_name: "ci-cd-test-server"
-          TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          TF_VAR_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          TF_VAR_location: "North Europe"
+          TF_VAR_resource_group_name: "ci-cd-auto-test-group"
+          TF_VAR_server_name: "ci-cd-auto-test-server"
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         run: |
           go test -timeout 35m -v ./test
 
@@ -64,15 +63,13 @@ jobs:
 
       - name: Terraform Plan
         env:
-          TF_VAR_resource_group_name: "app-grp"
+          TF_VAR_resource_group_name: "cd-cd-app-grp"
           TF_VAR_server_name: "postgres-server"
-          TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          TF_VAR_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          TF_VAR_location: "North Europe"
         run: terraform plan -out=tfplan -no-color
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
+        env:
+          TF_VAR_resource_group_name: "ci-cd-app-grp"
+          TF_VAR_server_name: "postgres-server"
         run: terraform apply -auto-approve tfplan
