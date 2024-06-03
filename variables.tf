@@ -23,13 +23,14 @@ variable "tenant_id" {
 variable "resource_group_name" {
   description = "The name of the resource group"
   type        = string
+  default     = "app-grp"
 }
 
 // Postgresql Flexible Server
 variable "server_name" {
   description = "The name of the PostgreSQL server"
   type        = string
-  #default     = "example-psqlflexibleserver-test-server"
+  default     = "example-psqlflexibleserver-server"
 }
 
 variable "location" {
